@@ -1,15 +1,10 @@
 <?php
-$host ="127.0.0.1";
-$port = "3306";
-$database = "blog base";
-$username = "blogBaseAdmin";
-$password = "IY4H389rYS[YMgKd";
+session_start(); //permet de commencer un session pour que php se souvienne de nous
 
-
-$pdo = new PDO("mysql:host=localhost;dbname=$database", $username, $password, [
-    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-]);
+require_once("logique/requetes.php");
+require_once("logique/display.php");
+require_once("logique/response.php"); //on fait appel aux fichiers que l'on veut utiliser
+                                        // permet d'utiliser les variables stockées dedans
 
 $id =null;
 if(!empty($_GET['id']) && ctype_digit($_GET['id'])) {
@@ -17,34 +12,16 @@ if(!empty($_GET['id']) && ctype_digit($_GET['id'])) {
 }
 
 if(!$id){
-    header('Location: index.php');
+    redirect();  //fonction dans response.php > permet de gérer les erreurs
 }
 
+$article = getArticle($id); //fonction dans requete.php > pour utiliser la base de donnée
 
-$query = $pdo->prepare("SELECT * FROM articles WHERE id = :id");
-$query->execute([
-    "id"=> $id
+if(!$article){redirect();} //si pas d'article alors renvoie sur index
+
+render("article/show", [ //affiche l'article
+    "article" => $article, //pas besoin de préciser id/title/content car le fait déjà dans les templates juste besoin de svoir ce qu'est $article
+    "pageTitle" => $article["title"], //pageTitle se trouve dans base.html = juste le titre dans l'onglet
 ]);
-$article = $query->fetch();
-?>
 
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Document</title>
-</head>
-<body>
-<hr>
-<a href="new-article.php">nouvel article</a>
-<hr>
-<hr>
-<div class="article">
-    <h3><?= $article['title'] ?></h3>
-    <p><?= $article['content'] ?></p>
-    <a href="index.php">Retour</a>
-</div>
-<hr>
-</body>
-</html>
+//retrouve les string pour le template et l'array pour la data qui va être utilisé
