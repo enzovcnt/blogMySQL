@@ -14,6 +14,7 @@ if(!$id){
 }
 
 $article = getArticle($id); //permet d'avoir l'article avec l'id
+//utilise ce que renvoie getArticle dans $article
 
 if(!$article){
     header('Location: index.php');
@@ -21,6 +22,7 @@ if(!$article){
 }
 
 deleteArticle($article['id']); //permet de delete le bon article car on a get son id avant
+//
 
 header('Location: index.php'); //redirige directement car rien a afficher
 exit();

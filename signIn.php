@@ -31,7 +31,7 @@ if($username && $password){
     }
 
     //le mdp est bon
-    $_SESSION['id'] = $user['id'];
+    $_SESSION['id'] = $user['id']; //permet de stocker un numéro unique pour le stocker dans un cookie
     $_SESSION['username'] = $user['username'];
 
 

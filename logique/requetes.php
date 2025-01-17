@@ -2,12 +2,15 @@
 require_once 'database.php'; //permet de faire appel au fichier qui contient la connexion à la database
 
 //dans le fichier on met toutes les fonctions qui font appel à la base de donnée
-function getArticles(): array
+function getArticles(): array //pas besoin de paramètre car prend tout les objets de la table
 {
     $query = getPdo()->query("SELECT * FROM articles");
     $articles = $query->fetchAll();
     return $articles;
 }
+
+//valeur de retour > peut en avoir ou pas > si juste fonction renvoie des données
+//seul moyen de fonctionner > prévoit de stocker ce qu'elle renvoie dans une variable
 
 //faire de la doc
 /**
@@ -19,7 +22,8 @@ function getArticle($id) : array | false //typer la valeur > la = array
     $query = getPdo()->prepare("SELECT * FROM articles WHERE id = :id");
     $query->execute([
         "id"=> $id
-    ]);
+    ]); //vérifie les données qui passent entre les mains de l'utilisateurs avant de les renvoyer
+    //jamais confiance à l'utilisateur
     $article = $query->fetch();
     return $article;
 }

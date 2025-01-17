@@ -32,7 +32,7 @@ if($title && $content) //une fois que les inputs sont remplies
     $id =  addArticle($newArticle); //pourquoi mettre directement id quand on déclare la fonction
 
     redirect("article", ["id"=>$id]); //une fois article crée renvoie sur la page de l'article
-}
+} //passe un id pour qu'article fonctionne
 
 render("article/new", [ //toujours l'affichage du html avec array = $data
     "pageTitle" => "New Article",
